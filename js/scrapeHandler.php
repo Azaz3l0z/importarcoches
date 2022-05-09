@@ -12,9 +12,8 @@
         $path = dirname(__FILE__);
         $path = join_paths($path, 'pyScraper.py');
         $command = 'python3 '.$path.' "'.$url.'"';
-        echo $command;
         $output = shell_exec($command);
-        echo "\n";
+        json_encode($output);
         echo $output;
     }
 
@@ -27,6 +26,5 @@
     
         return preg_replace('#/+#','/',join('/', $paths));
     }
-    
 
 ?>

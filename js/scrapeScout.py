@@ -2,5 +2,5 @@ import re
 from bs4 import BeautifulSoup
 
 
-def scrape(html: str):
+def scrape(r):
     return 1

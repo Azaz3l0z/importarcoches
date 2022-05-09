@@ -1,6 +1,7 @@
 import sys
 import json
 import requests
+from requests.exceptions import ConnectionError
 
 import scrapeScout as scout
 import scrapeMobileDE as mobile
@@ -22,11 +23,33 @@ headersDE = {
     'TE': 'trailers',
 }
 
-url = sys.argv[1]
-r = requests.get(url, headers=headersDE)
 
-if r:
-    ans = mobile.scrape(r.text)
-    print(ans)
-else:
-    print(json.dumps({'Response': 'Error'}))
+class SiteNotInDatabase(Exception):
+    pass
+
+
+class BadURL(Exception):
+    pass
+
+
+if __name__ == "__main__":
+    url = sys.argv[1]
+    try:
+        #url = "https://www.mobile.de/es/Veh%C3%ADculo/Volkswagen-Golf-VII-Lim.-Trendline-BMT/vhc:car,ms1:25200__,dmg:false/pg:vipcar/344493567.html"
+        try:
+            r = requests.get(url, headers=headersDE)
+        except ConnectionError as e:
+            raise(BadURL)
+
+        if r:
+            if 'mobile.de' in url:
+                ans = mobile.scrape(r)
+            print(ans)
+        else:
+            raise(SiteNotInDatabase)
+
+    except SiteNotInDatabase:
+        print(json.dumps({'Response': 'Site Not Found'}))
+
+    except BadURL:
+        print(json.dumps({'Response': 'Unknown Error'}))
