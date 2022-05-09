@@ -35,21 +35,27 @@ class BadURL(Exception):
 if __name__ == "__main__":
     url = sys.argv[1]
     try:
-        #url = "https://www.mobile.de/es/Veh%C3%ADculo/Volkswagen-Golf-VII-Lim.-Trendline-BMT/vhc:car,ms1:25200__,dmg:false/pg:vipcar/344493567.html"
         try:
             r = requests.get(url, headers=headersDE)
         except ConnectionError as e:
             raise(BadURL)
-
         if r:
             if 'mobile.de' in url:
-                ans = mobile.scrape(r)
-            print(ans)
+                ans = mobile.main(r)
+            elif 'autoscout.es' in url:
+                ans = ''
+            else:
+                raise(SiteNotInDatabase)
+            
+            print(json.dumps(ans))
         else:
-            raise(SiteNotInDatabase)
+            raise(BadURL)
 
     except SiteNotInDatabase:
         print(json.dumps({'Response': 'Site Not Found'}))
 
     except BadURL:
-        print(json.dumps({'Response': 'Unknown Error'}))
+        print(json.dumps({'Response': 'Bad URL'}))
+
+    # except Exception:
+    #     print(json.dumps({'Response': 'Unknown Error'}))

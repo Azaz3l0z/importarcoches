@@ -1,6 +1,9 @@
 import re
-import json
-import pdfkit
+import os
+import sys
+import requests
+import threading
+import weasyprint
 import unicodedata
 from bs4 import BeautifulSoup
 
@@ -72,4 +75,26 @@ def scrape(r):
             except AttributeError as e:
                 pass
 
-    return json.dumps(data)
+    return data
+
+def main(r):
+    if getattr(sys, 'frozen', False):
+        application_path = os.path.dirname(sys.executable)
+    elif __file__:
+        application_path = os.path.dirname(__file__)
+
+    os.chdir(application_path)
+
+    data = scrape(r)
+    th = threading.Thread(target=scrape, args=(r,))
+    th.start()
+
+    # PDF
+    file_name = os.path.join(application_path, data['title']+'.pdf')
+    pdf = weasyprint.HTML(string=r.text.encode('utf-8'))
+    pdf.write_pdf(file_name)
+
+    # with open(os.path.join(application_path, 'test.html'), 'w+') as file:
+    #     file.write(r.text)
+
+    return scrape(r)

@@ -1,9 +1,9 @@
 <?php
-    header('Content-Type: application/json');
+    //header('Content-Type: application/json');
     header('Access-Control-Allow-Origin: *');
     header("Access-Control-Allow-Methods: GET, OPTIONS");
     //$url = $_REQUEST["url"];
-    $url = "https://www.mobile.de/es/Veh%C3%ADculo/Volkswagen-Golf-VII-Lim.-Trendline-BMT/vhc:car,ms1:25200__,dmg:false/pg:vipcar/344493567.html";
+    $url = $_REQUEST['url'];
     scrape($url);
     // $response = array('url' => $url);
     // echo json_encode($response);
@@ -12,8 +12,9 @@
         $path = dirname(__FILE__);
         $path = join_paths($path, 'pyScraper.py');
         $command = 'python3 '.$path.' "'.$url.'"';
-        $output = shell_exec($command);
+        $output = shell_exec($command);;
         json_encode($output);
+        echo $command;
         echo $output;
     }
 
