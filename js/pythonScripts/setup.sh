@@ -9,3 +9,4 @@ yes | rm -r ./build
 yes | rm pyScraper.spec
 deactivate
 yes | rm -r ./venv
+mv pyScraper pyScraper.sh

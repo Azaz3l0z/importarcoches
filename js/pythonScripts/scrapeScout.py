@@ -39,13 +39,11 @@ class Scraper(object):
 
         return data
 
-    def pdf(self, title: str):
+    def pdf(self, title: str, pdf_folder: str):
         # Paths
         now = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
-        file_html = os.path.join(os.getcwd(), 'files',
-                                 'html', f'{now}_{title}.html')
-        file_pdf = os.path.join(os.getcwd(), 'files',
-                                'pdfs', f'{now}_{title}.pdf')
+        file_html = os.path.join(pdf_folder, f'{now}_{title}.html')
+        file_pdf = os.path.join(pdf_folder, f'{now}_{title}.pdf')
 
         # Create html
         html = self.request.text
@@ -57,8 +55,8 @@ class Scraper(object):
         htmlToPDF.htmlToPDF(file_html, file_pdf)
 
 
-def main(url: str):
+def main(url: str, pdf_folder: str):
     scrpr = Scraper(url)
     data = scrpr.scrape()
-    pdf = scrpr.pdf(data['title'])
+    pdf = scrpr.pdf(data['title'], pdf_folder)
     return data
