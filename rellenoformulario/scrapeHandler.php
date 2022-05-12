@@ -2,15 +2,15 @@
     //header('Content-Type: application/json');
     header('Access-Control-Allow-Origin: *');
     header("Access-Control-Allow-Methods: GET, OPTIONS");
-    $url = $_REQUEST['url'];
-    $pdf_folder = $_REQUEST['PDFPath'];
-    // $url = "https://www.autoscout24.es/anuncios/citroen-xsara-2-0-hdi-sx-diesel-a3eb3509-64f3-417b-b451-b7c731f3c180?sort=standard&desc=0&lastSeenGuidPresent=true&cldtsrc=listPage&cldtidx=1&search_id=n5ee1mso4o&source=listpage_search-results";
-    // $pdf_folder = "/home/azazel/Desktop";
+    // $url = $_REQUEST['url'];
+    // $pdf_folder = $_REQUEST['PDFPath'];
+    $url = "https://www.autoscout24.fr/offres/citroen-c4-coupe-hdi-92-pack-ambiance-diesel-blanc-db0326ea-70ea-43c5-8347-570ede1b752d?sort=standard&desc=0&lastSeenGuidPresent=false&cldtsrc=listPage&cldtidx=2&search_id=dnskdjiknc&source=listpage_search-results";
+    $pdf_folder = "/home/azazel/Desktop";
     scrape($url, $pdf_folder);
 
     function scrape($url, $pdf_folder) {
         $path = dirname(__FILE__);
-        $path = join_paths('python3 '.$path, 'pythonScripts', 'pyScraper.py');
+        $path = join_paths($path, 'pythonScripts', 'pyScraper.sh');
         $command = $path.' "'.$url.'"'.' "'.$pdf_folder.'"';
         $output = shell_exec($command);
 

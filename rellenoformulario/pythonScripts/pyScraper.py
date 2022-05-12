@@ -25,7 +25,7 @@ if __name__ == "__main__":
     try:
         if 'mobile.de' in url:
             ans = mobile.main(url, pdf_path)
-        elif 'autoscout24.es' in url:
+        elif 'autoscout24' in url:
             ans = scout.main(url, pdf_path)
         else:
             raise(SiteNotInDatabase)
